@@ -1,0 +1,34 @@
+## Commands to run container on Docker
+## Run docker
+## Stop container if needed:
+# docker stop <container_name>
+## Delete container if needed:
+# docker rm <container_name>
+## Run container again with docker-compose:
+# docker-compose -f docker-compose.yml up -d
+## or with docker command:
+# docker run -p 3306:3306 --name <container_name> -e MYSQL_ROOT_PASSWORD=xxxx -d mysql
+## Login to database using:
+# docker exec -it <container_name> mysql -h localhost -P 3306 -u root -p
+## Use xxxx/xxxx as user/password credentials
+version: '3.0'
+
+services:
+
+  db:
+    image: mysql
+    container_name: mysqldb
+    restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: xxxx
+      MYSQL_USER: xxxx
+      MYSQL_PASSWORD: xxxx
+      MYSQL_DATABASE: crypto
+    volumes:
+      - "./data/db/mysql:/var/lib/mysql"
+      - "./data/db-dump/mysql:/docker-entrypoint-initdb.d"
+#      - "./data/db-dump/mysql:/docker-entrypoint-initdb.d/:ro"
